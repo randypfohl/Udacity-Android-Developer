@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#EEEEEE"
+    tools:context="com.example.randypfohl.myportfolio.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="288dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="My Portfolio Applications"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="#01579B"/>
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Popular Movies"
+            android:id="@+id/moviesButton"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#E1F5FE"
+            android:textColor="#03A9F4"/>
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Stock Hawk"
+            android:id="@+id/stockButton"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#E1F5FE"
+            android:textColor="#03A9F4"/>
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Build It Bigger"
+            android:id="@+id/biggerButton"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#E1F5FE"
+            android:textColor="#03A9F4"/>
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Make Your App Material"
+            android:id="@+id/materialButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="#E1F5FE"
+            android:textColor="#03A9F4"/>
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Go Ubiquitous"
+            android:id="@+id/ubiquitousButton"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#E1F5FE"
+            android:textColor="#03A9F4"/>
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:text="Capstone "
+            android:id="@+id/capstoneButton"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="#E1F5FE"
+            android:textColor="#03A9F4"
+            />
+
+        <Space
+            android:layout_width="215dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+</RelativeLayout>
