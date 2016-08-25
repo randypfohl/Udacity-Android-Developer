@@ -12,11 +12,9 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, new PlaceholderFragment())
+                    .add(R.id.fragment_container, new ForecastFragment())
                     .commit();
 
         }
-
-
     }
 }
