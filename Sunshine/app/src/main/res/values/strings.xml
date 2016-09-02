@@ -37,4 +37,6 @@
     <string name="pref_Units_Metric" translatable="false">Metric</string>
 
     <string name="action_map" translatable="false">Map Location</string>
+    <string name="action_share">Share</string>
+
 </resources>
