@@ -7,7 +7,6 @@
          or something similar.
     -->
     <string name="app_name">Sunshine</string>
-
     <!--
          By convention, "action" denotes that this String will be used as the label for an Action,
          typically from the action bar.  The ActionBar is limited real estate, so shorter is better.
@@ -18,4 +17,24 @@
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="hello_world">Hello world!</string>
 
+
+    <!-- Label for location preference [CHAR LIMIT=30] -->
+    <string name="pref_location_label">Location</string>
+
+    <!-- key name for storing location in shared preferences[CHAR LIMIT=NONE] -->
+    <string name="pref_location_key" translatable="false">location</string>
+
+    <!-- default postal code for location preference [CHAR LIMIT=NONE]-->
+    <string name="pref_location_default" translatable="false">94513</string>
+
+
+    <string name="pref_Units_Key">Units</string>
+
+    <string name="pref_Units_Title" translatable="false">Temperature Units</string>
+
+    <string name="pref_Units_Imperial" translatable="false">Imperial</string>
+
+    <string name="pref_Units_Metric" translatable="false">Metric</string>
+
+    <string name="action_map" translatable="false">Map Location</string>
 </resources>
