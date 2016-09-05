@@ -94,21 +94,21 @@ public class DetailActivity extends AppCompatActivity {
             Intent intent = getActivity().getIntent();
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
                  mForecastStr = intent.getStringExtra(Intent.EXTRA_TEXT);
-                TextView display = (TextView) rootView.findViewById(R.id.weatherDetail);
-                display.setText(mForecastStr);
+
+                ((TextView) rootView.findViewById(R.id.weatherDetail))
+                        .setText(mForecastStr);
             }
 
             return rootView;
         }
 
+
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             inflater.inflate(R.menu.detailfragment, menu);
-
-            MenuItem item = menu.findItem(R.id.action_share);
+            MenuItem item = menu.findItem(R.id.menu_item_share);
 
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-
             setShareIntent(createShareForecastIntent());
         }
 
@@ -124,7 +124,7 @@ public class DetailActivity extends AppCompatActivity {
 
         private Intent createShareForecastIntent(){
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+           shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT,
                     mForecastStr + FORECAST_SHARE_HASHTAG);

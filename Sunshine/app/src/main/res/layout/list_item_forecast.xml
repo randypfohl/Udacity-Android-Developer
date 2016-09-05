@@ -5,7 +5,7 @@
     android:minHeight="@dimen/activity_vertical_margin"
     android:gravity="center_vertical"
     android:id="@+id/list_item_forecast_textview"
-    android:textSize="25dp"
+    android:textSize="30dp"
     android:text="placeholder">
 
 </TextView>

@@ -38,8 +38,7 @@ public class SettingsActivity extends PreferenceActivity
 
     /**
      * Attaches a listener so the summary is always updated with the preference value.
-     * Also fires the listener once, to initialize the summary (so it shows up before the value
-     * is changed.)
+     * Also fires the listener once, to initialize the summary.
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
