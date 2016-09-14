@@ -3,6 +3,9 @@
 
     <!-- theMovieDatabase Api Key -->
     <string name="apiKey">d1011cfc2a48018b2e4fa1e4d18bdd73</string>
+    <!--api key query parameter -->
+    <string name="api_key">api_key</string>
+
     <!-- theMovieDatabase URI -->
     <string name="apiURI">http://api.themoviedb.org/3/movie/</string>
 
