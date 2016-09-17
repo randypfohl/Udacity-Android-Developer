@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.randypfohl.popularmovies.detailFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="title"
+        android:id="@+id/detailTitle"
+        android:textSize="40dp"
+        android:background="#058271"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:shadowColor="#110f0f"
+        android:textColor="#ffffff"
+        android:paddingLeft="20dp"
+        android:padding="20dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detailPoster"
+            android:layout_weight="1"
+            android:layout_margin="3dp"
+            android:contentDescription="Move Poster" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Release Date"
+                android:id="@+id/detailRelease"
+                android:padding="15dp"
+                android:textSize="30dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Average Rating"
+                android:id="@+id/detailRating"
+                android:padding="15dp"
+                android:textSize="30dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Synopsis"
+        android:id="@+id/detailSynopsis"
+        android:layout_weight="1"
+        android:padding="15dp" />
+
+</LinearLayout>

@@ -15,8 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,17 +29,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class movieListFragment extends Fragment {
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    public movieImageAdapter movieAdapter;
+
+    //saving JSONArray to reduce network calls for details
     private JSONArray movieArray;
-    public ArrayAdapter<String> movieAdapter;
 
     public movieListFragment() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,40 +54,76 @@ public class movieListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        //custom adapter to handle multiple picasso requests
         movieAdapter =
                 new movieImageAdapter(
                         getActivity(),
                         R.layout.list_item_movie,
-                        //R.id.list_item_movie_imageView,
-                        new String[0]);
+                        new ArrayList<String>());
 
         View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
         GridView gridView = (GridView) rootView.findViewById(R.id.gridView);
         gridView.setAdapter(movieAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(
+
+                new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String forecast = movieAdapter.getItem(i);
-                Log.e(LOG_TAG, forecast);
-                // Intent openDetail = new Intent(getActivity(), DetailActivity.class)
-                //        .putExtra(Intent.EXTRA_TEXT, forecast);
-                // startActivity(openDetail);
+                String moviePosterPath= movieAdapter.getItem(i);
 
+                //helper method getMovieDetails returns array of details from JSON object to package into intent.
+
+                String[] information = getMovieDetails(i);
+                if (information != null) {
+                    Intent openDetail = new Intent(getActivity(), detailActivity.class)
+                            .putExtra(getString(R.string.detail_movie_title), information[0])
+                            .putExtra(getString(R.string.detail_movie_release), information[1])
+                            .putExtra(getString(R.string.detail_movie_vote_ave), information[2])
+                            .putExtra(getString(R.string.detail_movie_plot), information[3])
+                            .putExtra(getString(R.string.detail_movie_poster), moviePosterPath);
+
+                    startActivity(openDetail);
+                }
+                else {
+                    //in case of failure do not start activity but invite to retry
+                    Toast.makeText(getActivity(), "Cannot show movie details right now, try again soon", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        //  Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg").into((ImageView)rootView.findViewById(R.id.list_item_movie_imageView));
         return rootView;
-
-
     }
 
 
+    public String[] getMovieDetails(int i){
+
+        String[] information = new String[4];
+
+        final String MDB_TITLE = "original_title";
+        final String MDB_RELEASE = "release_date";
+        final String MDB_VOTEAVE = "vote_average";
+        final String MDB_PLOT = "overview";
+
+        try {
+            JSONObject movie = movieArray.getJSONObject(i);
+             information[0] = movie.getString(MDB_TITLE);
+             information[1] = getReadableDateString(movie.getString(MDB_RELEASE));
+             information[2] = movie.getString(MDB_VOTEAVE) + "/10";
+             information[3] = movie.getString(MDB_PLOT);
+
+            return information;
+        }
+        catch (JSONException e){
+            Log.e(LOG_TAG, "json exception during get movie title");
+        }
+        return information;
+    }
+
+
+    //TODO
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-        //// TODO: 9/2/16 Create Menu folder and menu options for popular, refresh, top rated
         //inflater.inflate(R.menu.forecastfragment, menu);
     }
 
@@ -92,22 +131,35 @@ public class movieListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        //if (id == R.id.action_refresh) {
-        //    updateMovies();
-        //    return true;
-        //}
+        if (id == R.id.action_refresh) {
+            updateMovies();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
     public void updateMovies() {
-        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-
-        //String location = preference.getString(getString(R.string.pref_location_key)
-        //   ,getString(R.string.pref_location_default));
+        String query = preference.getString(getString(R.string.pref_query_key)
+           ,getString(R.string.pref_query_default));
         FetchMoviesTask fetchMovies = new FetchMoviesTask();
-        fetchMovies.execute("popular");
+        fetchMovies.execute(query);
+    }
+
+    //Return just the year of date we want to use, would it be beneficial to add new format to strings?
+    private String getReadableDateString(String time){
+        SimpleDateFormat shortenedDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = shortenedDateFormat.parse(time);
+            shortenedDateFormat.applyPattern("yyyy");
+            return shortenedDateFormat.format(date);
+        }
+        catch (java.text.ParseException e){
+            Log.e(LOG_TAG, "cannot parse date returned");
+        }
+        return null;
     }
 
     @Override
@@ -117,6 +169,7 @@ public class movieListFragment extends Fragment {
     }
 
 
+    // Async task designed to handle request and create a json object that we can access easily.
     public class FetchMoviesTask extends AsyncTask<String, Void, String[]> {
         public final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
 
@@ -134,15 +187,13 @@ public class movieListFragment extends Fragment {
                 final String MOVIE_BASE_URL = "http://api.themoviedb.org/3/movie/";
 
                 Uri buildUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                        .appendPath(getString(R.string.popularEndpoint))
-                        .appendQueryParameter(getString(R.string.api_key), getString(R.string.apiKey))
+                        .appendPath(strings[0])
+                        .appendQueryParameter(getString(R.string.api_key), getString(R.string.api_value))
                         .build();
-
-                Log.d("build uri", buildUri.toString());
 
                 URL url = new URL(buildUri.toString());
 
-                // Create the request to OpenWeatherMap, and open the connection
+                // Create the request to Movie DB, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -170,8 +221,6 @@ public class movieListFragment extends Fragment {
                     return null;
                 }
                 movieJsonStr = buffer.toString();
-                //Log.e(LOG_TAG, "Forecast json string: " + movieJsonStr);
-                System.out.println(movieJsonStr);
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, e.toString());
@@ -188,6 +237,9 @@ public class movieListFragment extends Fragment {
                     }
                 }
 
+                // will take new json object and create a array of poster urls so we may pass it to
+                // custom array adapter. These will be appended to request and downloaded using picasso api
+                // if the json isn't formatted correctly it will return an error and stack trace.
                 try {
                     return getBackdropDataFromJson(movieJsonStr);
                 } catch (JSONException e) {
@@ -203,20 +255,23 @@ public class movieListFragment extends Fragment {
         public String[] getBackdropDataFromJson(String movieJsonStr)
                 throws JSONException {
 
+            System.out.println(movieJsonStr);
+
             // These are the names objects that need to be extracted.
             final String MDB_RESULTS = "results";
-            final String MDB_BACKDROP = "backdrop_path";
+            final String MDB_BACKDROP = "poster_path";
 
             JSONObject movieJson = new JSONObject(movieJsonStr);
-            String[] backdropArray = new String[movieJson.length()];
-
 
             movieArray = movieJson.getJSONArray(MDB_RESULTS);
+            String[] backdropArray = new String[movieArray.length()];
+
             System.out.println(movieArray.length());
 
             for(int i = 0; i < movieArray.length(); i++) {
                 JSONObject movie = movieArray.getJSONObject(i);
                 backdropArray[i] = movie.getString(MDB_BACKDROP);
+                System.out.println(backdropArray[i]);
             }
 
             return backdropArray;
@@ -225,9 +280,12 @@ public class movieListFragment extends Fragment {
         public void onPostExecute(String[] result) {
 
             if (result != null) {
-                movieAdapter.clear();
+
+                if(movieAdapter != null) {
+                    movieAdapter.clear();
+                }
+
                 movieAdapter.addAll(result);
-                // New data is back from the server.  Hooray!
             }
         }
 

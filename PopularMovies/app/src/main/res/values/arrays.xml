@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="query_values">
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+
+    <string-array name="query_keys">
+        <item>popular</item>
+        <item>top rated</item>
+    </string-array>
+
+</resources>

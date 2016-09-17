@@ -2,26 +2,34 @@
     <string name="app_name">PopularMovies</string>
 
     <!-- theMovieDatabase Api Key -->
-    <string name="apiKey">d1011cfc2a48018b2e4fa1e4d18bdd73</string>
+    <string name="api_value">d1011cfc2a48018b2e4fa1e4d18bdd73</string>
     <!--api key query parameter -->
     <string name="api_key">api_key</string>
-
-    <!-- theMovieDatabase URI -->
+    <!-- theMovieDatabase request URI -->
     <string name="apiURI">http://api.themoviedb.org/3/movie/</string>
-
-
-    <!-- theMovieDatabase popular endpoint -->
-    <string name="popularEndpoint">popular</string>
-    <!-- theMovieDatabase top rated endpoint -->
-    <string name="topRatedEndpoint">top_rated</string>
-
+    <string name="posterURI">http://image.tmdb.org/t/p/</string>
 
     <!-- Image URL -->
     <string name="imageURI">http://image.tmdb.org/t/p/</string>
     <!-- Image Size -->
-    <string name="imageSize">w185</string>
+    <string name="image_Size">w780</string>
+
+    <!-- query prefence key -->
+    <string name="pref_query_key">pref_query</string>
+    <string name="pref_query_default">popular</string>
+    <string name="pref_SortBy_Title" translatable="false">SORT</string>
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Detail Activity Intent Keys -->
+    <string name="detail_movie_title">movie title</string>
+    <string name="detail_movie_release">release</string>
+    <string name="detail_movie_vote_ave">voteave</string>
+    <string name="detail_movie_plot">plot</string>
+    <string name="detail_movie_poster">poster</string>
 
 </resources>

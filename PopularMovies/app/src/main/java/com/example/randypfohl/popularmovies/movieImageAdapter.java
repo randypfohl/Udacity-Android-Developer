@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by randypfohl on 9/9/16.
@@ -19,14 +16,12 @@ import java.lang.reflect.Array;
 public class movieImageAdapter extends ArrayAdapter<String>{
 
         private static final String LOG_TAG = movieImageAdapter.class.getSimpleName();
-        private String[] movieUrls;
+        private ArrayList<String> movieUrls;
 
-        public movieImageAdapter(Activity context, int resourceID, String... movieUrls) {
+        public movieImageAdapter(Activity context, int resourceID, ArrayList<String> movieUrls) {
             super(context, resourceID, movieUrls);
-            // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
-            // the second argument is used when the ArrayAdapter is populating a single TextView.
-            // Because this is a custom adapter for two TextViews and an ImageView, the adapter is not
-            // going to use this second argument, so it can be any value. Here, we used 0.
+
+            //take movie urls array and pass it to global scope
             this.movieUrls = movieUrls;
         }
 
@@ -43,11 +38,12 @@ public class movieImageAdapter extends ArrayAdapter<String>{
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_movie, parent, false);
             }
 
-            final String FORECAST_BASE_URL = "http://image.tmdb.org/t/p/";
+            final String FORECAST_BASE_URL = getContext().getString(R.string.imageURI);
 
-            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                    .appendPath("w780")
-                    .appendPath(movieUrls[position])
+            final Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                    .appendPath(getContext().getString(R.string.image_Size))
+                    // we substring because this string comes prefixed with "/" and will be translated into it's %2 value. So we remove it before appending.
+                    .appendPath(movieUrls.get(position).substring(1))
                     .build();
 
             Picasso.with(getContext())
@@ -55,12 +51,12 @@ public class movieImageAdapter extends ArrayAdapter<String>{
                     .into((ImageView) convertView, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
-                            Log.e("success", "good");
+                            Log.e("success", "success");
                         }
 
                         @Override
                         public void onError() {
-                            Log.e("failure", "bad");
+                            Log.e("failure", "bad " +builtUri.toString());
                         }
                     });
 
