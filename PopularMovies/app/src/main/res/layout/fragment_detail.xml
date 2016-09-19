@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.randypfohl.popularmovies.detailFragment">
+    tools:context=".DetailFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -11,16 +11,12 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="title"
+        tools:text="title"
         android:id="@+id/detailTitle"
-        android:textSize="40dp"
-        android:background="#058271"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:shadowColor="#110f0f"
-        android:textColor="#ffffff"
-        android:paddingLeft="20dp"
-        android:padding="20dp" />
+        android:textSize="40sp"
+        android:background="@color/title_background"
+        android:textColor="@color/title_color"
+        android:padding="@dimen/detail_title_padding" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -32,9 +28,10 @@
             android:layout_height="wrap_content"
             android:id="@+id/detailPoster"
             android:layout_weight="1"
-            android:layout_margin="3dp"
+            android:paddingLeft="@dimen/detail_detail_padding"
             android:contentDescription="Move Poster" />
 
+        <!--android:layout_margin="3dp" -->
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -45,19 +42,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Release Date"
+                tools:text="Release Date"
                 android:id="@+id/detailRelease"
-                android:padding="15dp"
-                android:textSize="30dp" />
+                android:padding="@dimen/detail_detail_padding"
+                android:textSize="30sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Average Rating"
+                tools:text="Average Rating"
                 android:id="@+id/detailRating"
-                android:padding="15dp"
-                android:textSize="30dp" />
+                android:padding="@dimen/detail_detail_padding"
+                android:textSize="30sp" />
         </LinearLayout>
 
     </LinearLayout>
@@ -66,9 +63,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Synopsis"
+        tools:text="Synopsis"
         android:id="@+id/detailSynopsis"
         android:layout_weight="1"
-        android:padding="15dp" />
+        android:padding="@dimen/detail_detail_padding" />
 
 </LinearLayout>

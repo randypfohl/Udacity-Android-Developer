@@ -3,7 +3,7 @@ package com.example.randypfohl.popularmovies;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class detailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -12,7 +12,7 @@ public class detailActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.detail_container, new detailFragment())
+                    .add(R.id.detail_container, new DetailFragment())
                     .commit();
         }
     }

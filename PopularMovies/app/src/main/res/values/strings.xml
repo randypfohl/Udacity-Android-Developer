@@ -5,9 +5,19 @@
     <string name="api_value"></string>
     <!--api key query parameter -->
     <string name="api_key">api_key</string>
+
+
     <!-- theMovieDatabase request URI -->
     <string name="apiURI">http://api.themoviedb.org/3/movie/</string>
     <string name="posterURI">http://image.tmdb.org/t/p/</string>
+
+    <!-- theMovieDatabase Json Keys-->
+    <string name="MDB_TITLE">original_title</string>
+    <string name="MDB_RELEASE">release_date</string>
+    <string name="MDB_VOTEAVE">vote_average</string>
+    <string name="MDB_PLOT">overview</string>
+    <string name="MDB_POSTER_URL">poster_path</string>
+
 
     <!-- Image URL -->
     <string name="imageURI">http://image.tmdb.org/t/p/</string>
@@ -25,11 +35,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <!-- Detail Activity Intent Keys -->
-    <string name="detail_movie_title">movie title</string>
-    <string name="detail_movie_release">release</string>
-    <string name="detail_movie_vote_ave">voteave</string>
-    <string name="detail_movie_plot">plot</string>
-    <string name="detail_movie_poster">poster</string>
+    <!-- Detail movie object intent key-->
+    <string name="movie_object">movie object</string>
 
 </resources>

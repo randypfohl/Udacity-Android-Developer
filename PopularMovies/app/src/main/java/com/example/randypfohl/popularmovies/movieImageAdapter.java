@@ -13,12 +13,12 @@ import java.util.ArrayList;
 /**
  * Created by randypfohl on 9/9/16.
  */
-public class movieImageAdapter extends ArrayAdapter<String>{
+public class MovieImageAdapter extends ArrayAdapter<String>{
 
-        private static final String LOG_TAG = movieImageAdapter.class.getSimpleName();
+        private static final String LOG_TAG = MovieImageAdapter.class.getSimpleName();
         private ArrayList<String> movieUrls;
 
-        public movieImageAdapter(Activity context, int resourceID, ArrayList<String> movieUrls) {
+        public MovieImageAdapter(Activity context, int resourceID, ArrayList<String> movieUrls) {
             super(context, resourceID, movieUrls);
 
             //take movie urls array and pass it to global scope
