@@ -2,7 +2,7 @@
     <string name="app_name">PopularMovies</string>
 
     <!-- theMovieDatabase Api Key -->
-    <string name="api_value"></string>
+    <string name="api_value">d1011cfc2a48018b2e4fa1e4d18bdd73</string>
     <!--api key query parameter -->
     <string name="api_key">api_key</string>
 
