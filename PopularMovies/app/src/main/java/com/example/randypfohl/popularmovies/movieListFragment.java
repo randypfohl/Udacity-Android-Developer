@@ -102,6 +102,7 @@ public class MovieListFragment extends Fragment {
                    movie.setVoteAve(movieJSON.getString(getString(R.string.MDB_VOTEAVE)) + "/10");
                    movie.setPlot(movieJSON.getString(getString(R.string.MDB_PLOT)));
                    movie.setPosterUrl(movieJSON.getString(getString(R.string.MDB_POSTER_URL)));
+                   movie.setMovieID(movieJSON.getString(getString(R.string.MDB_MOVIE_ID)));
 
             return movie;
         } catch (JSONException e) {

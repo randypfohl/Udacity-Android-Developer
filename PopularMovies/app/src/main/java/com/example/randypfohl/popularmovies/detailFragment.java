@@ -1,6 +1,7 @@
 package com.example.randypfohl.popularmovies;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +15,9 @@ import com.squareup.picasso.Picasso;
 
 
 public class DetailFragment extends Fragment {
-        private final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+        private Movie movie;
 
         public DetailFragment() {
         }
@@ -36,7 +39,7 @@ public class DetailFragment extends Fragment {
 
             View root = inflater.inflate(R.layout.fragment_detail, container, false);
             Bundle intent = getActivity().getIntent().getExtras();
-            Movie movie = intent.getParcelable(getString(R.string.movie_object));
+            movie = intent.getParcelable(getString(R.string.movie_object));
 
                 ((TextView) root.findViewById(R.id.detailTitle)).setText(movie.getTitle());
                 ((TextView) root.findViewById(R.id.detailRelease)).setText(movie.getRelease());
@@ -56,6 +59,14 @@ public class DetailFragment extends Fragment {
         Picasso.with(getActivity()).load(url).into((ImageView)root.findViewById(R.id.detailPoster));
 
         return root;
+        }
+
+
+        public class getTrailersTask extends AsyncTask<Void, Void, Void>{
+            @Override
+            protected Void doInBackground(Void... voids) {
+                return null;
+            }
         }
 
     }

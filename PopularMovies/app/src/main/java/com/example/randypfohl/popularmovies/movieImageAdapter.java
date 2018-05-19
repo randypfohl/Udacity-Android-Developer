@@ -21,19 +21,13 @@ public class MovieImageAdapter extends ArrayAdapter<String>{
         public MovieImageAdapter(Activity context, int resourceID, ArrayList<String> movieUrls) {
             super(context, resourceID, movieUrls);
 
-            //take movie urls array and pass it to global scope
             this.movieUrls = movieUrls;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            // Gets the movie object from the ArrayAdapter at the appropriate position
             String movieUrl = getItem(position);
 
-            // Adapters recycle views to AdapterViews.
-            // If this is a new View object we're getting, then inflate the layout.
-            // If not, this view already has the layout inflated from a previous call to getView,
-            // and we modify the View widgets as usual.
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_movie, parent, false);
             }

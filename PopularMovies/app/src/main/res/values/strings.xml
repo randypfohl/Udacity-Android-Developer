@@ -17,7 +17,7 @@
     <string name="MDB_VOTEAVE">vote_average</string>
     <string name="MDB_PLOT">overview</string>
     <string name="MDB_POSTER_URL">poster_path</string>
-
+    <string name="MDB_MOVIE_ID">id</string>
 
     <!-- Image URL -->
     <string name="imageURI">http://image.tmdb.org/t/p/</string>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PopularMovies2</string>
+
+    <!-- theMovieDatabase Api Key -->
+    <string name="api_value">d1011cfc2a48018b2e4fa1e4d18bdd73</string>
+    <string name="api_base_url">http://api.themoviedb.org/3/movie/</string>
+    <string name="tmdb_base_url">http://image.tmdb.org/t/p/</string>
+
+    <string name="image_Size">w780</string>
+</resources>

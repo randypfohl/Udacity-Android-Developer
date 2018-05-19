@@ -13,6 +13,7 @@ public class Movie implements Parcelable {
     private String voteAve;
     private String plot;
     private String posterUrl;
+    private String movieID;
 
 
     public Movie(Parcel in) {
@@ -24,6 +25,7 @@ public class Movie implements Parcelable {
         this.voteAve = data[2];
         this.plot = data[3];
         this.posterUrl = data[4];
+        this.movieID = data[5];
     }
 
     public Movie(){
@@ -40,6 +42,14 @@ public class Movie implements Parcelable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getMovieID() {
+        return movieID;
+    }
+
+    public void setMovieID(String movieID) {
+        this.movieID = movieID;
     }
 
     public void setTitle(String title) {
@@ -82,7 +92,8 @@ public class Movie implements Parcelable {
                 this.release,
                 this.voteAve,
                 this.plot,
-                this.posterUrl
+                this.posterUrl,
+                this.movieID
         });
 
     }
