@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.education.pfohl.popularmovies2.models.Movie;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 

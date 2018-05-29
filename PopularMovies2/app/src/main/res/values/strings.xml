@@ -7,4 +7,6 @@
     <string name="tmdb_base_url">http://image.tmdb.org/t/p/</string>
 
     <string name="image_Size">w780</string>
+    <string name="movie_object">movie object</string>
+
 </resources>
