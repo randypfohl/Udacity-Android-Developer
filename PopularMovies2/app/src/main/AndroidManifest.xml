@@ -19,6 +19,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity"></activity>
+
+        <provider
+            android:name="com.education.pfohl.popularmovies2.Repository.MovieContentProvider"
+            android:authorities="com.education.pfohl.popularmovies2"
+            android:exported="false"/>
     </application>
+
 
 </manifest>

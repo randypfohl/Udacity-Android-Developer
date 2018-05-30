@@ -1,7 +1,10 @@
 package com.education.pfohl.popularmovies2;
 
 import android.content.Intent;
+import android.database.ContentObserver;
 import android.net.Network;
+import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.education.pfohl.popularmovies2.Repository.MovieRepoContract;
+import com.education.pfohl.popularmovies2.Repository.Repository;
 import com.education.pfohl.popularmovies2.models.Movie;
 import com.education.pfohl.popularmovies2.models.MoviePage;
 
@@ -23,7 +28,7 @@ import retrofit2.Response;
 public class MovieListActivity extends AppCompatActivity {
 
     private MovieImageAdapter movieAdapter;
-
+    private List<Movie> movies;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,6 @@ public class MovieListActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     @Override
@@ -58,7 +62,7 @@ public class MovieListActivity extends AppCompatActivity {
         NetworkUtils.getPopularMovies(this, new Callback<MoviePage>() {
             @Override
             public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
-                movieAdapter.addAll(response.body().getResults());
+                Repository.addMovies(getApplicationContext(), response.body().getResults());
             }
 
             @Override
@@ -66,6 +70,20 @@ public class MovieListActivity extends AppCompatActivity {
 
             }
         });
+
+        getContentResolver().registerContentObserver(
+                MovieRepoContract.MovieEntry.CONTENT_URI, false, new ContentObserver(null) {
+
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                movieAdapter.addAll( Repository.getMovies(getApplicationContext()));
+                            }
+                        });
+                    }
+                });
     }
 
 }

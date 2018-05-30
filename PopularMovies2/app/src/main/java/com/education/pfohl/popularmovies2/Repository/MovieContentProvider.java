@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 
 import com.education.pfohl.popularmovies2.models.Movie;
 
+import java.util.List;
+
 // COMPLETED (1) Verify that TaskContentProvider extends from ContentProvider and implements required methods
     public class MovieContentProvider extends ContentProvider {
 
@@ -90,11 +92,81 @@ import com.education.pfohl.popularmovies2.models.Movie;
 
 
         @Override
-        public Cursor query(@NonNull Uri uri, String[] projection, String selection,
-                            String[] selectionArgs, String sortOrder) {
+    public int bulkInsert(@NonNull Uri uri, ContentValues[] values) {
+        final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
 
-            throw new UnsupportedOperationException("Not yet implemented");
+        // COMPLETED (2) Write URI matching code to identify the match for the tasks directory
+        int match = sUriMatcher.match(uri);
+        int result = 0;
+        switch (match) {
+            case MOVIES:
+                // COMPLETED (3) Insert new values into the database
+                // Inserting values into tasks table
+
+                db.beginTransaction();
+                try {
+                    for(ContentValues value : values){
+                    long id = db.insert(MovieRepoContract.MovieEntry.TABLE_NAME, null, value);
+                        if ( id <= 0 ) {
+                            throw new android.database.SQLException("Failed to insert row into " + uri);
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                    result = 1;
+                } finally {
+                    db.endTransaction();
+                }
+
+                break;
+            // COMPLETED (4) Set the value for the returnedUri and write the default case for unknown URI's
+            // Default case throws an UnsupportedOperationException
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
+        // COMPLETED (5) Notify the resolver if the uri has been changed, and return the newly inserted URI
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        // Return constructed uri (this points to the newly inserted row of data)
+        return result;
+    }
+
+
+        @Override
+        public Cursor query(@NonNull Uri uri, String[] projection, String selection,
+                String[] selectionArgs, String sortOrder) {
+
+            // Get access to underlying database (read-only for query)
+            final SQLiteDatabase db = mMovieDbHelper.getReadableDatabase();
+
+            // Write URI match code and set a variable to return a Cursor
+            int match = sUriMatcher.match(uri);
+            Cursor retCursor;
+
+            // Query for the tasks directory and write a default case
+            switch (match) {
+                // Query for the tasks directory
+                case MOVIES:
+                    retCursor =  db.query(MovieRepoContract.MovieEntry.TABLE_NAME,
+                            projection,
+                            selection,
+                            selectionArgs,
+                            null,
+                            null,
+                            sortOrder);
+                    break;
+                // Default exception
+                default:
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
+            }
+
+            // Set a notification URI on the Cursor and return that Cursor
+            retCursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+            // Return the desired Cursor
+            return retCursor;
+        }
+
 
 
         @Override
