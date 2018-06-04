@@ -8,5 +8,6 @@
 
     <string name="image_Size">w780</string>
     <string name="movie_object">movie object</string>
+    <string name="description_of_movie_poster">Poster of the movie</string>
 
 </resources>

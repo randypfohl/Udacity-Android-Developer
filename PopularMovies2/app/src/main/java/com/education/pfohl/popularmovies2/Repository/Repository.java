@@ -57,16 +57,45 @@ public class Repository {
 
        List<Movie> movies = new ArrayList<Movie>();
        while(cursor.moveToNext()){
-           Movie movie = new Movie();
-
-           movie.setBackdrop_path(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_BACKDROP_PATH)));
-           movie.setPoster_path(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_POSTER_PATH)));
-           movie.setAdult(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_ADULT))));
-
-           System.out.println(movie.isAdult() + " " + movie.getPoster_path());
-           movies.add(movie);
-
+        movies.add(packageMovie(cursor));
        }
         return movies;
+    }
+
+    public static Movie getMovie(Context context, int id){
+        String selection = MovieRepoContract.MovieEntry.COLUMN_ID+"=?";
+        String[] seletion_args={String.valueOf(id)};
+        Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, selection, seletion_args, null);
+
+        return cursor.moveToFirst()?  packageMovie(cursor): null;
+    }
+
+
+    private static Movie packageMovie(Cursor cursor){
+        Movie movie = new Movie();
+
+        movie.setBackdrop_path(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_BACKDROP_PATH)));
+        movie.setPoster_path(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_POSTER_PATH)));
+        movie.setAdult(Boolean.valueOf(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_ADULT))));
+
+        String[] genre = cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_GENRE_IDS)).split(",");
+        int[] genres = new int[genre.length];
+
+        for(int j = 0 ; j < genre.length; j++){
+            genres[j] = Integer.valueOf(genre[j]);
+        }
+        movie.setGenre_ids(genres);
+        movie.setId(cursor.getInt(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_ID)));
+        movie.setOriginal_language(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_ORIG_LANGUAGE)));
+        movie.setOriginal_title(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_ORIG_TITLE)));
+        movie.setOverview(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_OVERVIEW)));
+        movie.setPopularity(cursor.getDouble(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_POPULARITY)));
+        movie.setRelease_date(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_RELEASE_DATE)));
+        movie.setTitle(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_TITLE)));
+        movie.setVideo(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_VIDEO_FLAG)).equals("true"));
+        movie.setVote_average(cursor.getDouble(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_VOTE_AVERAGE)));
+        movie.setVote_count(cursor.getInt(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_VOTE_COUNT)));
+        return  movie;
+
     }
 }
