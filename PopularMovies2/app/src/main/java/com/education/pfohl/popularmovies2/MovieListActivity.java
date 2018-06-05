@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -59,14 +60,18 @@ public class MovieListActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d("getting popular movies", "wtf");
+
         NetworkUtils.getPopularMovies(this, new Callback<MoviePage>() {
             @Override
             public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
+                Log.d("got popular movies", "wtf");
                 Repository.addMovies(getApplicationContext(), response.body().getResults());
             }
 
             @Override
             public void onFailure(Call<MoviePage> call, Throwable t) {
+                Log.d("faild getting movies", "wtf");
 
             }
         });
