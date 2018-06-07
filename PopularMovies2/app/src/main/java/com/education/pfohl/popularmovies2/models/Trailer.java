@@ -1,6 +1,6 @@
 package com.education.pfohl.popularmovies2.models;
 
-public class Video {
+public class Trailer {
     public String id;
     public String iso_639_1;
     public String iso_3166_1;

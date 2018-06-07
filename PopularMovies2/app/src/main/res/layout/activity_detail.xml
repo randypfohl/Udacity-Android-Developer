@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailActivity"
+    tools:context=".MovieDetails.DetailActivity"
     >
 
     <android.support.constraint.ConstraintLayout
@@ -74,7 +74,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/poster" />
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/trailer_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plot"
-            app:layout_constraintVertical_bias="1.0"></LinearLayout>
+            app:layout_constraintVertical_bias="1.0"></android.support.v7.widget.RecyclerView>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -10,10 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.education.pfohl.popularmovies2.models.Movie;
-
-import java.util.List;
-
 // COMPLETED (1) Verify that TaskContentProvider extends from ContentProvider and implements required methods
     public class MovieContentProvider extends ContentProvider {
 

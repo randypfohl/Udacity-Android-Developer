@@ -1,4 +1,4 @@
-package com.education.pfohl.popularmovies2;
+package com.education.pfohl.popularmovies2.MovieList;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.education.pfohl.popularmovies2.R;
 import com.education.pfohl.popularmovies2.models.Movie;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;

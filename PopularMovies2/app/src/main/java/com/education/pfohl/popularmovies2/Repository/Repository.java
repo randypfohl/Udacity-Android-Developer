@@ -3,7 +3,6 @@ package com.education.pfohl.popularmovies2.Repository;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 
 import com.education.pfohl.popularmovies2.models.Movie;
 
@@ -51,7 +50,6 @@ public class Repository {
     }
 
 
-    //todo finish reading cursor
     public static List<Movie> getMovies(Context context){
        Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, null, null, null);
 

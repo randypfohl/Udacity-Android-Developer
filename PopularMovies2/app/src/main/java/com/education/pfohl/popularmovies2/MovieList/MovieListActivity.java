@@ -1,10 +1,7 @@
-package com.education.pfohl.popularmovies2;
+package com.education.pfohl.popularmovies2.MovieList;
 
 import android.content.Intent;
 import android.database.ContentObserver;
-import android.net.Network;
-import android.net.Uri;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,13 +10,15 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.education.pfohl.popularmovies2.MovieDetails.DetailActivity;
+import com.education.pfohl.popularmovies2.NetworkUtils;
+import com.education.pfohl.popularmovies2.R;
 import com.education.pfohl.popularmovies2.Repository.MovieRepoContract;
 import com.education.pfohl.popularmovies2.Repository.Repository;
 import com.education.pfohl.popularmovies2.models.Movie;
 import com.education.pfohl.popularmovies2.models.MoviePage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;

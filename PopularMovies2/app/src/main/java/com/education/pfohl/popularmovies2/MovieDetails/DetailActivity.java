@@ -1,18 +1,24 @@
-package com.education.pfohl.popularmovies2;
+package com.education.pfohl.popularmovies2.MovieDetails;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.education.pfohl.popularmovies2.MovieList.MovieImageAdapter;
+import com.education.pfohl.popularmovies2.NetworkUtils;
+import com.education.pfohl.popularmovies2.R;
 import com.education.pfohl.popularmovies2.Repository.Repository;
 import com.education.pfohl.popularmovies2.models.Movie;
-import com.education.pfohl.popularmovies2.models.Trailers;
-import com.education.pfohl.popularmovies2.models.Video;
+import com.education.pfohl.popularmovies2.models.TrailerPage;
+import com.education.pfohl.popularmovies2.models.Trailer;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,7 +28,9 @@ import retrofit2.Response;
 public class DetailActivity extends AppCompatActivity {
 
     Movie movie;
-    List<Video> videoList;
+    List<Trailer> videoList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,18 +38,22 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int id = intent.getIntExtra(getString(R.string.movie_object), -1);
         movie = Repository.getMovie(this, id );
-        NetworkUtils.getVideoTrailers(this, new Callback<Trailers>() {
+        NetworkUtils.getVideoTrailers(this, new Callback<TrailerPage>() {
             @Override
-            public void onResponse(Call<Trailers> call, Response<Trailers> response) {
+            public void onResponse(Call<TrailerPage> call, Response<TrailerPage> response) {
                 videoList = response.body().getResults();
             }
 
             @Override
-            public void onFailure(Call<Trailers> call, Throwable t) {
+            public void onFailure(Call<TrailerPage> call, Throwable t) {
                 System.out.println(call.request().body() );
                 t.printStackTrace();
             }
         }, String.valueOf(id));
+
+        MovieTrailerAdapter trailerAdapter = new MovieTrailerAdapter(this, R.layout.trailer_list_item, new ArrayList<Trailer>());
+        RecyclerView trailers = findViewById(R.id.trailer_list);
+        trailers.setAdapter(trailerAdapter);
 
         // todo set up view to look pretty
         // todo make network calls for trailers and link them to play

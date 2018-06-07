@@ -2,9 +2,9 @@ package com.education.pfohl.popularmovies2.models;
 
 import java.util.List;
 
-public class Trailers {
+public class TrailerPage {
     public String id;
-    public List<Video> results;
+    public List<Trailer> results;
 
     public String getId() {
         return id;
@@ -14,11 +14,11 @@ public class Trailers {
         this.id = id;
     }
 
-    public List<Video> getResults() {
+    public List<Trailer> getResults() {
         return results;
     }
 
-    public void setResults(List<Video> results) {
+    public void setResults(List<Trailer> results) {
         this.results = results;
     }
 }

@@ -11,14 +11,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MovieListActivity">
+        <activity android:name=".MovieList.MovieListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".MovieDetails.DetailActivity"></activity>
 
         <provider
             android:name="com.education.pfohl.popularmovies2.Repository.MovieContentProvider"
