@@ -3,6 +3,7 @@ package com.education.pfohl.popularmovies2;
 import android.content.Context;
 
 import com.education.pfohl.popularmovies2.models.MoviePage;
+import com.education.pfohl.popularmovies2.models.ReviewPage;
 import com.education.pfohl.popularmovies2.models.TrailerPage;
 
 import java.util.Locale;
@@ -27,6 +28,9 @@ public class NetworkUtils {
 
         @GET("{id}/videos")
         Call<TrailerPage> getVideoTrailers(@Path("id") String id, @Query(API_KEY_QUERY) String api_key);
+
+        @GET("{id}/reviews")
+        Call<ReviewPage> getMovieReviews(@Path("id") String id, @Query(API_KEY_QUERY) String api_key);
     }
 
 
@@ -51,6 +55,18 @@ public class NetworkUtils {
         Call<TrailerPage> popularMovies = service.getVideoTrailers(id, context.getString(R.string.api_value));
         popularMovies.enqueue(callback);
     }
+
+    public static void getMovieReviews(Context context, Callback<ReviewPage> callback, String id){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(context.getString(R.string.api_base_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MovieDBService service = retrofit.create(MovieDBService.class);
+        Call<ReviewPage> popularMovies = service.getMovieReviews(id, context.getString(R.string.api_value));
+        popularMovies.enqueue(callback);
+    }
+
 
 
 }

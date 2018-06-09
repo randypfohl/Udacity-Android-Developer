@@ -1,57 +1,76 @@
 package com.education.pfohl.popularmovies2.MovieDetails;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.education.pfohl.popularmovies2.R;
 import com.education.pfohl.popularmovies2.models.Trailer;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MovieTrailerAdapter extends RecyclerView.Adapter<Trailer> {
+public class MovieTrailerAdapter extends RecyclerView.Adapter<MovieTrailerAdapter.TrailerViewHolder> {
 
     private static final String LOG_TAG = com.education.pfohl.popularmovies2.MovieList.MovieImageAdapter.class.getSimpleName();
-    private ArrayList<Trailer> trailers;
+    private List<Trailer> trailers;
     private Context context;
 
-    public MovieTrailerAdapter(Activity context, int resourceID, ArrayList<Trailer> trailers) {
-        super(context, resourceID, trailers);
+    public MovieTrailerAdapter(Context context, List<Trailer> trailers) {
         this.context = context;
         this.trailers = trailers;
     }
 
 
-    //todo fix this to set up on click correctly and load correct list item view
+    //todo make this a recycler view adapter god damn it.
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final String key = getItem(position).getKey();
+    public TrailerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.trailer_list_item, parent, false);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.trailer_list_item, parent, false);
-        }
+        return new TrailerViewHolder(view);
+    }
 
-        ((TextView) parent.findViewById(R.id.trailer_title)).setText(getItem(position).name);
-        convertView.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onBindViewHolder(TrailerViewHolder holder, final int position) {
+        holder.trailerTitle.setText(trailers.get(position).getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                watchYoutubeVideo(context, key);
+                watchYoutubeVideo(context, trailers.get(position).getKey());
             }
         });
-        return convertView;
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return trailers.size();
+    }
+
+
+    class TrailerViewHolder extends RecyclerView.ViewHolder {
+
+        // Class variables for the task description and priority TextViews
+        TextView trailerTitle;
+
+        /**
+         * Constructor for the TaskViewHolders.
+         *
+         * @param itemView The view inflated in onCreateViewHolder
+         */
+        public TrailerViewHolder(View itemView) {
+            super(itemView);
+
+            trailerTitle = (TextView) itemView.findViewById(R.id.trailer_title);
+        }
     }
 
     public static void watchYoutubeVideo(Context context, String id){
@@ -63,23 +82,5 @@ public class MovieTrailerAdapter extends RecyclerView.Adapter<Trailer> {
         } catch (ActivityNotFoundException ex) {
             context.startActivity(webIntent);
         }
-    }
-
-
-    //todo make this a recycler view adapter god damn it.
-    @NonNull
-    @Override
-    public Trailer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull Trailer holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
     }
 }
