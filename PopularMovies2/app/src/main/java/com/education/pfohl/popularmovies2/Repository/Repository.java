@@ -42,7 +42,6 @@ public class Repository {
             contentValues.put(MovieRepoContract.MovieEntry.COLUMN_ADULT, movie.isAdult());
             contentValues.put(MovieRepoContract.MovieEntry.COLUMN_OVERVIEW, movie.getOverview());
             contentValues.put(MovieRepoContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getRelease_date());
-
             values[i] = contentValues;
         }
         int i = context.getContentResolver().bulkInsert(MovieRepoContract.MovieEntry.CONTENT_URI, values);
@@ -57,7 +56,19 @@ public class Repository {
        while(cursor.moveToNext()){
         movies.add(packageMovie(cursor));
        }
+       cursor.close();
         return movies;
+    }
+
+    public static boolean setFavorite(Context context, int id, boolean isFavorite){
+        String selection = MovieRepoContract.MovieEntry.COLUMN_ID+"=?";
+        String[] selection_args={String.valueOf(id)};
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MovieRepoContract.MovieEntry.COLUMN_FAVORITE_FLAG, String.valueOf(isFavorite) );
+        int result = context.getContentResolver().update(MovieRepoContract.MovieEntry.CONTENT_URI, contentValues, selection, selection_args);
+
+        return result > 0;
     }
 
     public static Movie getMovie(Context context, int id){
@@ -65,7 +76,16 @@ public class Repository {
         String[] seletion_args={String.valueOf(id)};
         Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, selection, seletion_args, null);
 
-        return cursor.moveToFirst()?  packageMovie(cursor): null;
+
+        while(cursor.moveToNext()){
+            System.out.println(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_TITLE)));
+        }
+        Movie movie = null;
+        if(cursor.moveToFirst())
+           movie = packageMovie(cursor);
+
+        cursor.close();
+        return movie;
     }
 
 
@@ -93,6 +113,9 @@ public class Repository {
         movie.setVideo(cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_VIDEO_FLAG)).equals("true"));
         movie.setVote_average(cursor.getDouble(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_VOTE_AVERAGE)));
         movie.setVote_count(cursor.getInt(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_VOTE_COUNT)));
+        String fromCursor = cursor.getString(cursor.getColumnIndex(MovieRepoContract.MovieEntry.COLUMN_FAVORITE_FLAG));
+        boolean favorite = fromCursor.equals("true");
+        movie.setFavorite(favorite);
         return  movie;
 
     }

@@ -41,6 +41,7 @@ public class MovieRepoContract {
             public static final String COLUMN_ADULT = "adult";
             public static final String COLUMN_OVERVIEW = "overview";
             public static final String COLUMN_RELEASE_DATE = "release_date";
+            public static final String COLUMN_FAVORITE_FLAG = "favorite";
 
         }
 }

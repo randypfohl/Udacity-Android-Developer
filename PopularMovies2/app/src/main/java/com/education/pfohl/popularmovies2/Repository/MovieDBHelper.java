@@ -30,8 +30,8 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
         // Create tasks table (careful to follow SQL formatting rules)
         final String CREATE_TABLE = "CREATE TABLE "  + MovieEntry.TABLE_NAME + " (" +
-                MovieEntry._ID                  + " INTEGER PRIMARY KEY, " +
-                MovieEntry.COLUMN_ID            + " TEXT NOT NULL, " +
+                MovieEntry._ID                  + " INTEGER, " +
+                MovieEntry.COLUMN_ID            + " TEXT  PRIMARY KEY NOT NULL, " +
                 MovieEntry.COLUMN_VOTE_COUNT    + " INTEGER NOT NULL, " +
                 MovieEntry.COLUMN_VIDEO_FLAG    + " TEXT NOT NULL," +
                 MovieEntry.COLUMN_VOTE_AVERAGE  + " REAL NOT NULL, " +
@@ -44,7 +44,8 @@ public class MovieDBHelper extends SQLiteOpenHelper {
                 MovieEntry.COLUMN_BACKDROP_PATH + " TEXT, " +
                 MovieEntry.COLUMN_ADULT         + " TEXT NOT NULL, " +
                 MovieEntry.COLUMN_OVERVIEW      + " TEXT NOT NULL, " +
-                MovieEntry.COLUMN_RELEASE_DATE  + " TEXT NOT NULL" +
+                MovieEntry.COLUMN_RELEASE_DATE  + " TEXT NOT NULL," +
+                MovieEntry.COLUMN_FAVORITE_FLAG  + " TEXT NOT NULL DEFAULT 'false'" +
                 ");";
 
         db.execSQL(CREATE_TABLE);

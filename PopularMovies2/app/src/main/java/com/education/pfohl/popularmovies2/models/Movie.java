@@ -15,6 +15,15 @@ public class Movie{
     boolean adult;
     String overview;
     String release_date;
+    Boolean favorite;
+
+    public Boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     public int getVote_count() {
         return vote_count;

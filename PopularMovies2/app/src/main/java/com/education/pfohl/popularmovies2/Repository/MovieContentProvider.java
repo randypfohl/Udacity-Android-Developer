@@ -58,23 +58,23 @@ import android.support.annotation.NonNull;
         public Uri insert(@NonNull Uri uri, ContentValues values) {
             final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
 
-            // COMPLETED (2) Write URI matching code to identify the match for the tasks directory
             int match = sUriMatcher.match(uri);
-            Uri returnUri; // URI to be returned
+            Uri returnUri;
 
             switch (match) {
                 case MOVIES:
-                    // COMPLETED (3) Insert new values into the database
-                    // Inserting values into tasks table
-                    long id = db.insert(MovieRepoContract.MovieEntry.TABLE_NAME, null, values);
-                    if ( id > 0 ) {
-                        returnUri = ContentUris.withAppendedId(MovieRepoContract.MovieEntry.CONTENT_URI, id);
+
+                    int result = (int) db.insertWithOnConflict(MovieRepoContract.MovieEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+                    if (result == -1) {
+                        String id = values.getAsString(MovieRepoContract.MovieEntry.COLUMN_ID);
+                        result = db.update(MovieRepoContract.MovieEntry.TABLE_NAME, values, MovieRepoContract.MovieEntry.COLUMN_ID+"=?", new String[] {id});
+                    }
+                    if ( result > 0 ) {
+                        returnUri = ContentUris.withAppendedId(MovieRepoContract.MovieEntry.CONTENT_URI, result);
                     } else {
                         throw new android.database.SQLException("Failed to insert row into " + uri);
                     }
                     break;
-                // COMPLETED (4) Set the value for the returnedUri and write the default case for unknown URI's
-                // Default case throws an UnsupportedOperationException
                 default:
                     throw new UnsupportedOperationException("Unknown uri: " + uri);
             }
@@ -91,20 +91,20 @@ import android.support.annotation.NonNull;
     public int bulkInsert(@NonNull Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
 
-        // COMPLETED (2) Write URI matching code to identify the match for the tasks directory
         int match = sUriMatcher.match(uri);
         int result = 0;
         switch (match) {
             case MOVIES:
-                // COMPLETED (3) Insert new values into the database
-                // Inserting values into tasks table
 
                 db.beginTransaction();
                 try {
-                    for(ContentValues value : values){
-                    long id = db.insert(MovieRepoContract.MovieEntry.TABLE_NAME, null, value);
+                        for(ContentValues value : values){
+                            int id = (int) db.insertWithOnConflict(MovieRepoContract.MovieEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_IGNORE);
+                            if (id == -1) {
+                                id = db.update(MovieRepoContract.MovieEntry.TABLE_NAME, value, MovieRepoContract.MovieEntry.COLUMN_ID+"=?", new String[] {value.getAsString(MovieRepoContract.MovieEntry.COLUMN_ID)});
+                            }
                         if ( id <= 0 ) {
-                            throw new android.database.SQLException("Failed to insert row into " + uri);
+                            throw new android.database.SQLException("Failed to insert row into " + uri + " " + id);
                         }
                     }
                     db.setTransactionSuccessful();
@@ -114,16 +114,12 @@ import android.support.annotation.NonNull;
                 }
 
                 break;
-            // COMPLETED (4) Set the value for the returnedUri and write the default case for unknown URI's
-            // Default case throws an UnsupportedOperationException
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        // COMPLETED (5) Notify the resolver if the uri has been changed, and return the newly inserted URI
         getContext().getContentResolver().notifyChange(uri, null);
 
-        // Return constructed uri (this points to the newly inserted row of data)
         return result;
     }
 
@@ -173,10 +169,28 @@ import android.support.annotation.NonNull;
 
 
         @Override
-        public int update(@NonNull Uri uri, ContentValues values, String selection,
-                          String[] selectionArgs) {
+        public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+            final SQLiteDatabase db = mMovieDbHelper.getWritableDatabase();
 
-            throw new UnsupportedOperationException("Not yet implemented");
+            int match = sUriMatcher.match(uri);
+            int result;
+
+            switch (match) {
+                case MOVIES:
+                    result = db.update(MovieRepoContract.MovieEntry.TABLE_NAME,  values, selection, selectionArgs);
+
+                    if ( result < 1){
+                        throw new android.database.SQLException("Failed to update row in " + uri);
+                    }
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+            }
+
+            if(result > 0)
+                 getContext().getContentResolver().notifyChange(uri, null);
+            return result;
         }
 
 

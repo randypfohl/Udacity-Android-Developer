@@ -83,6 +83,7 @@ public class MovieListActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                movieAdapter.clear();
                                 movieAdapter.addAll( Repository.getMovies(getApplicationContext()));
                             }
                         });
@@ -90,4 +91,8 @@ public class MovieListActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
