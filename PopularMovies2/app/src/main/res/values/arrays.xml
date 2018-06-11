@@ -1,0 +1,14 @@
+<resources>
+    <string-array name="query_values">
+        <item>popular</item>
+        <item>top_rated</item>
+        <item>favorites</item>
+    </string-array>
+
+    <string-array name="query_keys">
+        <item>popular</item>
+        <item>top rated</item>
+        <item>favorites</item>
+    </string-array>
+
+</resources>

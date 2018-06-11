@@ -1,10 +1,14 @@
 package com.education.pfohl.popularmovies2.MovieList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -15,6 +19,7 @@ import com.education.pfohl.popularmovies2.NetworkUtils;
 import com.education.pfohl.popularmovies2.R;
 import com.education.pfohl.popularmovies2.Repository.MovieRepoContract;
 import com.education.pfohl.popularmovies2.Repository.Repository;
+import com.education.pfohl.popularmovies2.Setting.SettingsActivity;
 import com.education.pfohl.popularmovies2.models.Movie;
 import com.education.pfohl.popularmovies2.models.MoviePage;
 
@@ -59,21 +64,43 @@ public class MovieListActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("getting popular movies", "wtf");
+        Log.d("getting movies", "");
 
-        NetworkUtils.getPopularMovies(this, new Callback<MoviePage>() {
-            @Override
-            public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
-                Log.d("got popular movies", "wtf");
-                Repository.addMovies(getApplicationContext(), response.body().getResults());
-            }
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(this);
 
-            @Override
-            public void onFailure(Call<MoviePage> call, Throwable t) {
-                Log.d("faild getting movies", "wtf");
+        String query = preference.getString(getString(R.string.pref_query_key), getString(R.string.pref_query_default));
 
-            }
-        });
+        if(query.equals(getString(R.string.pref_query_default)) || query.equals(getString(R.string.pref_query_favorite))){
+            NetworkUtils.getPopularMovies(this, new Callback<MoviePage>() {
+                @Override
+                public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
+                    Log.d("got popular movies", "wtf");
+                    Repository.addMovies(getApplicationContext(), response.body().getResults());
+                }
+
+                @Override
+                public void onFailure(Call<MoviePage> call, Throwable t) {
+                    Log.d("failed getting movies", "popular movies failed");
+
+                }
+            });
+        }
+        else if (query.equals(getString(R.string.pref_query_top_rated))){
+
+            NetworkUtils.getTopRatedMovies(this, new Callback<MoviePage>() {
+                @Override
+                public void onResponse(Call<MoviePage> call, Response<MoviePage> response) {
+                    Log.d("got top rated movies", "wtf");
+                    Repository.addMovies(getApplicationContext(), response.body().getResults());
+                }
+
+                @Override
+                public void onFailure(Call<MoviePage> call, Throwable t) {
+                    Log.d("failed getting movies", "top rated movies failed");
+
+                }
+            });
+        }
 
         getContentResolver().registerContentObserver(
                 MovieRepoContract.MovieEntry.CONTENT_URI, false, new ContentObserver(null) {
@@ -83,8 +110,22 @@ public class MovieListActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+
+                                SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                String query = preference.getString(getString(R.string.pref_query_key), getString(R.string.pref_query_default));
                                 movieAdapter.clear();
-                                movieAdapter.addAll( Repository.getMovies(getApplicationContext()));
+
+                                if(query.equals(getString(R.string.pref_query_default))){
+                                    movieAdapter.addAll( Repository.getPopularMovies(getApplicationContext()));
+                                }
+                                else if (query.equals(getString(R.string.pref_query_top_rated))){
+                                    movieAdapter.addAll( Repository.getTopRatedMovies(getApplicationContext()));
+                                }
+                                else if (query.equals(getString(R.string.pref_query_favorite))) {
+                                    movieAdapter.addAll( Repository.getFavoriteMovies(getApplicationContext()));
+
+                                }
+
                             }
                         });
                     }
@@ -94,5 +135,22 @@ public class MovieListActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

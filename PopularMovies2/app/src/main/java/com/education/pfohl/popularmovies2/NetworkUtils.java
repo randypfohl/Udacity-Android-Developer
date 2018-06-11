@@ -26,6 +26,9 @@ public class NetworkUtils {
         @GET("popular")
         Call<MoviePage> listPopularMovies(@Query(API_KEY_QUERY) String api_key, @Query(LANGUAGE_KEY_QUERY) String language);
 
+        @GET("top_rated")
+        Call<MoviePage> listTopRatedMovies(@Query(API_KEY_QUERY) String api_key, @Query(LANGUAGE_KEY_QUERY) String language);
+
         @GET("{id}/videos")
         Call<TrailerPage> getVideoTrailers(@Path("id") String id, @Query(API_KEY_QUERY) String api_key);
 
@@ -43,6 +46,17 @@ public class NetworkUtils {
         MovieDBService service = retrofit.create(MovieDBService.class);
         Call<MoviePage> popularMovies = service.listPopularMovies(context.getString(R.string.api_value), Locale.getDefault().toString());
         popularMovies.enqueue(callback);
+    }
+
+    public static void getTopRatedMovies(Context context, Callback<MoviePage> callback){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(context.getString(R.string.api_base_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        MovieDBService service = retrofit.create(MovieDBService.class);
+        Call<MoviePage> topRatedMovies = service.listTopRatedMovies(context.getString(R.string.api_value), Locale.getDefault().toString());
+        topRatedMovies.enqueue(callback);
     }
 
     public static void getVideoTrailers(Context context, Callback<TrailerPage> callback, String id){

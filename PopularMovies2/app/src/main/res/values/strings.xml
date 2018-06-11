@@ -9,5 +9,15 @@
     <string name="image_Size">w780</string>
     <string name="movie_object">movie object</string>
     <string name="description_of_movie_poster">Poster of the movie</string>
+    <string name="pref_query_key">pref_query</string>
+    <string name="pref_query_default">popular</string>
+    <string name="pref_query_top_rated">top_rated</string>
+    <string name="pref_query_favorite">favorites</string>
+
+    <string name="pref_SortBy_Title" translatable="false">SORT</string>
+
+    <!-- Strings related to Settings -->
+    <string name="title_activity_settings">Settings</string>
+
 
 </resources>

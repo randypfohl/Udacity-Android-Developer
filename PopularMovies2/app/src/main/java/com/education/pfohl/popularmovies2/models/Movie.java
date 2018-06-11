@@ -15,9 +15,9 @@ public class Movie{
     boolean adult;
     String overview;
     String release_date;
-    Boolean favorite;
+    boolean favorite;
 
-    public Boolean isFavorite() {
+    public boolean isFavorite() {
         return favorite;
     }
 

@@ -11,8 +11,6 @@ import java.util.List;
 
 public class Repository {
 
-
-
     public static void addMovies(Context context, List<Movie> movies){
 
         ContentValues[] values = new ContentValues[movies.size()];
@@ -49,14 +47,39 @@ public class Repository {
     }
 
 
-    public static List<Movie> getMovies(Context context){
-       Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, null, null, null);
+    public static List<Movie> getPopularMovies(Context context){
+       Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, null, null, MovieRepoContract.MovieEntry.COLUMN_POPULARITY + " DESC LIMIT 20");
 
        List<Movie> movies = new ArrayList<Movie>();
        while(cursor.moveToNext()){
         movies.add(packageMovie(cursor));
        }
        cursor.close();
+        return movies;
+    }
+
+    public static List<Movie> getTopRatedMovies(Context context){
+
+        Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, null, null, MovieRepoContract.MovieEntry.COLUMN_VOTE_AVERAGE + " DESC LIMIT 20");
+
+        List<Movie> movies = new ArrayList<Movie>();
+        while(cursor.moveToNext()){
+            movies.add(packageMovie(cursor));
+        }
+        cursor.close();
+        return movies;
+    }
+
+    public static List<Movie> getFavoriteMovies(Context context){
+        String selection = MovieRepoContract.MovieEntry.COLUMN_FAVORITE_FLAG+"=?";
+        String[] selection_args={String.valueOf(true)};
+        Cursor cursor = context.getContentResolver().query(MovieRepoContract.MovieEntry.CONTENT_URI, null, selection, selection_args,  null);
+
+        List<Movie> movies = new ArrayList<Movie>();
+        while(cursor.moveToNext()){
+            movies.add(packageMovie(cursor));
+        }
+        cursor.close();
         return movies;
     }
 

@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MovieDetails.DetailActivity"></activity>
+        <activity android:name=".Setting.SettingsActivity"></activity>
 
         <provider
             android:name="com.education.pfohl.popularmovies2.Repository.MovieContentProvider"
