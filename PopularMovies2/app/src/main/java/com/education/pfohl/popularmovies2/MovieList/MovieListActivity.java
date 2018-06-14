@@ -3,6 +3,7 @@ package com.education.pfohl.popularmovies2.MovieList;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.ContentObserver;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,11 +35,13 @@ public class MovieListActivity extends AppCompatActivity {
 
     private MovieImageAdapter movieAdapter;
     private List<Movie> movies;
+    private GridView gridView;
+    private Parcelable mGridState;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
-        GridView gridView = findViewById(R.id.gridView);
+        this.gridView = findViewById(R.id.gridView);
         this.movieAdapter = new MovieImageAdapter(this, R.layout.movie_list_item, new ArrayList<Movie>());
         gridView.setAdapter(movieAdapter);
         gridView.setOnItemClickListener(
@@ -59,6 +62,28 @@ public class MovieListActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+       Parcelable state =  this.gridView.onSaveInstanceState();
+        savedInstanceState.putParcelable("gridview", state);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mGridState = savedInstanceState.getParcelable("gridview");
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mGridState != null) {
+            gridView.onRestoreInstanceState(mGridState);
+        }
     }
 
     @Override
@@ -125,6 +150,9 @@ public class MovieListActivity extends AppCompatActivity {
                                     movieAdapter.addAll( Repository.getFavoriteMovies(getApplicationContext()));
 
                                 }
+
+                                if(mGridState != null)
+                                    gridView.onRestoreInstanceState(mGridState);
 
                             }
                         });

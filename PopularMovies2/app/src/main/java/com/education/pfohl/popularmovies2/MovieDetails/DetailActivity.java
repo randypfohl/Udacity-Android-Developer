@@ -3,6 +3,7 @@ package com.education.pfohl.popularmovies2.MovieDetails;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
         id = intent.getIntExtra(getString(R.string.movie_object), -1);
         movie = Repository.getMovie(this, id );
 
+
         NetworkUtils.getVideoTrailers(this, new Callback<TrailerPage>() {
             @Override
             public void onResponse(Call<TrailerPage> call, Response<TrailerPage> response) {
@@ -84,8 +86,22 @@ public class DetailActivity extends AppCompatActivity {
 
 
         // todo set up view to look pretty
-        // todo find more todos
+        // todo make movies parceable because you hate yourself
+        // todo after movies are made parceable you can apply the savedinstancestate to the details page, store the movie list on rotation, check lifecycles, add flags
+
         refreshUI();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelable("movie", this.movie);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.movie = savedInstanceState.getParcelable("movie");
     }
 
     @Override

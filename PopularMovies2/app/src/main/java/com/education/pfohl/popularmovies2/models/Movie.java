@@ -1,6 +1,9 @@
 package com.education.pfohl.popularmovies2.models;
 
-public class Movie{
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Movie implements Parcelable{
     int vote_count;
     int id;
     boolean video;
@@ -16,6 +19,66 @@ public class Movie{
     String overview;
     String release_date;
     boolean favorite;
+
+
+    public Movie (Parcel in){
+        this.vote_count = in.readInt();
+        this.id = in.readInt();
+        this.video = Boolean.valueOf(in.readString());
+        this.vote_average = in.readDouble();
+        this.title = in.readString();
+        this.popularity = in.readDouble();
+        this.poster_path = in.readString();
+        this.original_language = in.readString();
+        this.original_title = in.readString();
+        in.readIntArray(this.genre_ids);
+        this.backdrop_path = in.readString();
+        this.adult = Boolean.valueOf(in.readString());
+        this.overview = in.readString();
+        this.release_date = in.readString();
+        this.favorite = Boolean.valueOf(in.readString());
+    }
+
+    public Movie (){
+
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Movie createFromParcel(Parcel in) {
+
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.vote_count);
+        dest.writeInt(this.id);
+        dest.writeString(String.valueOf(video));
+        dest.writeDouble(vote_average);
+        dest.writeString(title);
+        dest.writeDouble(popularity);
+        dest.writeString(poster_path);
+        dest.writeString(original_language);
+        dest.writeString(original_title);
+        dest.writeIntArray(genre_ids);
+        dest.writeString(backdrop_path);
+        dest.writeString(String.valueOf(adult));
+        dest.writeString(overview);
+        dest.writeString(release_date);
+        dest.writeString(String.valueOf(favorite));
+    }
+
+
 
     public boolean isFavorite() {
         return favorite;
@@ -136,4 +199,6 @@ public class Movie{
     public void setRelease_date(String release_date) {
         this.release_date = release_date;
     }
+
+
 }
